@@ -1,84 +1,147 @@
+/* 
+Iman Abadi Bin Mohd Nizwan (A23CS0084) 
+Ahmad Adib Bin A.Mazlam (A23CS0205)
+Section 03
+Dr Nies Hui Wen
+*/
 #include <iostream>
+#include <limits>
 using namespace std;
-const int MAX_BOOKS=20;
 
-void displayMainMenu(int [],int);
-void addBook(string [], string [], int [],int);
-void displayLibrary(string [], string [], int [],int);
-void searchByTitle(string [], string [], int [], int);
+void displayMainMenu();
+void addBook(int &);
+void displayLibrary(int);
+void searchByTitle();
 
-int main(){
+const int MAX_BOOKS = 5;
+
+string title[MAX_BOOKS];
+string author[MAX_BOOKS];
+string publicationYear[MAX_BOOKS];
+
+int main()
+{
 	int choice;
-	do{
-		for(int i=0; i<MAX_BOOKS; i++){
-			
+	int bookCount = 0;
+	do
+	{
+		displayMainMenu();
+		cout << "Enter your choice: ";
+		while (true)
+		{
+			cin >> choice ;
+		    if (!cin)
+		    {
+		      cout << "Please the the number according to the function displayed in the menu. Enter again " << endl;
+		      cin.clear();
+		      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		      continue;
+		    }
+		    else break;
+		}	
+
+		
+		switch (choice)
+		{
+			case 1:
+				addBook(bookCount);
+				break;
+			case 2:
+				displayLibrary(bookCount);
+				break;
+			case 3:
+				searchByTitle();
+				break;
+			case 4:
+				cout << "\nGoodbye!\n";
+				break;	
 		}
-	}while (choice != 4);
+	}
+	while(choice != 4);
+	
 	return 0;
 }
 
-void displayMainMenu(int choice[], int i){
-	do{
-		cout<<"\n<<<<<Library Management System>>>>>\n\n========================================"<<endl;
-		cout<<"1. Add a Book\n2. Display Library\n3. Search by Title\n4. Quit"<<endl;
-		cout<<"Enter your choice: ";
-		cin>>choice[i];
-		cout<<endl;
-	}while(choice[i] != 1 || choice[i] != 2 || choice[i] !=3 || choice[i] != 4);
-	
+void displayMainMenu()
+{
+	cout << "<<<<<Library Management System>>>>>\n";
+	cout << "========================================\n";
+	cout << "1. Add a Book\n";
+	cout << "2. Display Library\n";
+	cout << "3. Search by Title\n";
+	cout << "4. Quit\n";
 }
 
-void addBook(string book[], string name[], int year[], int i){
-	cout<<"\nEnter book title: ";
-	cin>>book[i];
-	cout<<"Enter author name: ";
-	cin>>name[i];
-	cout<<"Enter publication year: ";
-	cin>>year[i];
-	cout<<"\nBook added successfully!";
-	
-}
-
-void displayLibrary(string book[], string name[], int year[], int i){
-	cout<<"Library Contents:\n\n===================="<<endl;
-	cout<<"Title: "<<book[i]<<endl;
-	cout<<"Author: "<<name[i]<<endl;
-	cout<<"Year : "<<year[i]<<endl<<endl;
-	
-}
-
-void searchByTitle(string book[], string name[], int year[], int i){
-	string a;
-	cout<<"Enter the title to search: ";
-	cin>>a;
-	
-	if(a==book[i-1]){
-		cout<<"Book found:\n\n====================";
-		cout<<"Title: "<<book[i-1]<<endl;
-		cout<<"Author: "<<name[i-1]<<endl;
-		cout<<"Year: "<<year[i-1]<<endl;
-		
-	}else{
-		cout<<"Book not found."<<endl;
-		
+void addBook(int &bookCount)
+{
+	bookCount = 0 ;
+	int static count = 0;
+	if (count < MAX_BOOKS)
+	{
+		cin.ignore();
+		cout << "\n";
+		cout << "Enter book title: ";
+		getline(cin, title[count]);
+		cout << "\n";
+		cout << "Enter author name: ";
+		getline(cin, author[count]);
+		cout << "\n";
+		cout << "Enter publication year: ";
+		getline(cin, publicationYear[count]);
+		cout << "\n\n";
+		cout << "Book added succesfully!";
+		cout << "\n\n";
 	}
+	else if (count >= MAX_BOOKS)
+		cout << endl << "The number of books that can be added has reached the maximum number." << endl << endl;
 	
+	bookCount = count;
+	count++;
 }
 
+void displayLibrary(int bookCount)
+{
+	cout << "\n";
+	cout << "Library Contents:\n";
+	cout << "====================\n";
+	if (bookCount > 0)
+	{
+		for (int i = 0; i <= bookCount; i++)
+		{
+			cout << "Title: " << title[i] << "\n";
+			cout << "Author: " << author[i] << "\n";
+			cout << "Year: " << publicationYear[i] << "\n\n";
+		}
+	}
+	else
+	cout << "No books are currently in the Library System.\n";
+	cout << endl;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void searchByTitle()
+{
+	string search;
+	cin.ignore();
+	cout << "\nEnter the title to search: ";
+	getline(cin, search);
+	cout << endl;
+	
+	for (int i = 0; i <= MAX_BOOKS; i++)
+	{
+		if (search != title[i])
+		{
+			continue;		
+		}
+		
+		else if  (search == title[i])
+		{
+			cout << "Book found :\n";
+			cout << "====================\n";
+			cout << "Title: " << title[i] << "\n";
+			cout << "Author: " << author[i] << "\n";
+			cout << "Year: " << publicationYear[i] << "\n\n";
+			return;
+		}
+	}
+	cout << "The book titled " << search << " is not in the Library System\n\n";	
+}
